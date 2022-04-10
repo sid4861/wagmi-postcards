@@ -1,0 +1,146 @@
+.headerImage {
+    animation: MoveUpDown 2.5s linear infinite;
+    position: absolute;
+    width: 100%;
+    height: auto;
+  }
+  
+  @keyframes MoveUpDown {
+    0%, 100% {
+      top: -150px;
+    }
+    50% {
+      top: -120px;
+    }
+  }
+
+  .headerCoinOne {
+    animation: MoveUpDownCoinOne 2.5s linear infinite;
+    position: absolute;
+  }
+  
+  @keyframes MoveUpDownCoinOne {
+    0%, 100% {
+      top: 10px;
+    }
+    50% {
+      top: 30px;
+    }
+  }
+
+  .headerCoinTwo {
+    animation: MoveUpDownCoinTwo 2.5s linear infinite;
+    position: absolute;
+    right: 10px;
+  }
+  
+  @keyframes MoveUpDownCoinTwo {
+    0%, 100% {
+      top: 20px;
+    }
+    50% {
+      top: 60px;
+    }
+  }
+
+  .headerCoinThree {
+    animation: MoveUpDownCoinThree 2.5s linear infinite;
+    position: absolute;
+    left: 80px;
+  }
+  
+  @keyframes MoveUpDownCoinThree {
+    0%, 100% {
+      top: 150px;
+    }
+    50% {
+      top: 180px;
+    }
+  }
+
+  .mailOne {
+    animation: MailOne 2.5s linear infinite;
+    position: absolute;
+    left: 280px;
+  }
+  
+  @keyframes MailOne {
+    0%, 100% {
+      top: 150px;
+    }
+    50% {
+      top: 180px;
+    }
+  }
+
+  .mailTwo {
+    animation: MailTwo 2.5s linear infinite;
+    position: absolute;
+    left: 320px;
+  }
+  
+  @keyframes MailTwo {
+    0%, 100% {
+      top: -150px;
+    }
+    50% {
+      top: -120px;
+    }
+  }
+  
+
+  @media only screen and (max-width: 600px) {
+    .headerCoinOne {
+      animation: MoveUpDownCoinOne 2.5s linear infinite;
+      position: absolute;
+    }
+
+    .headerCoinTwo {
+      animation: MoveUpDownCoinTwo 2.5s linear infinite;
+      position: absolute;
+      right: 5px;
+    }
+
+    .headerCoinThree {
+      animation: MoveUpDownCoinThree 2.5s linear infinite;
+      position: absolute;
+      left: 40px;
+      width: 60px;
+      height: auto;
+    }
+
+    .mailOne {
+      animation: MailOne 2.5s linear infinite;
+      position: absolute;
+      left: 180px;
+      width: 80px;
+      height: auto;
+    }
+
+    .mailTwo {
+      animation: MailTwo 2.5s linear infinite;
+      position: absolute;
+      left: 220px;
+      width: 60px;
+      height: auto;
+    }
+
+    @keyframes MailOne {
+      0%, 100% {
+        top: 30px;
+      }
+      50% {
+        top: 60px;
+      }
+    }
+
+    @keyframes MoveUpDownCoinThree {
+      0%, 100% {
+        top: -150px;
+      }
+      50% {
+        top: -130px;
+      }
+    }
+    
+  }

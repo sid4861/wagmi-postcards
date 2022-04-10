@@ -1,0 +1,21 @@
+.blur {
+    position: absolute;
+    width: 272px;
+    height: 281px;
+    left: 106px;
+    top: 35px;
+    background: #E9FB8E;
+    filter: blur(520px);
+    }
+
+  @media only screen and (max-width: 600px) {
+    .blur {
+        position: absolute;
+        width: 172px;
+        height: 80px;
+        left: 56px;
+        top: 0px;
+        background: #E9FB8E;
+        filter: blur(520px);
+        }
+}
