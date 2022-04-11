@@ -7,7 +7,7 @@ import {
     HStack,
     Image
 } from '@chakra-ui/react';
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Navbar from '../../components/Navbar';
 import LayerBlurOne from '../../components/LayerBlurOne';
 import LayerBlurTwo from '../../components/LayerBlurTwo';
@@ -27,6 +27,8 @@ import PostCardSix from "../../assets/postcard-6.svg";
 
 
 function LandingPage() {
+
+
     return (
         <Box>
             <Navbar />
@@ -121,6 +123,37 @@ function HowItWorks() {
 }
 
 function ExplorePostcards() {
+
+    const THRESHOLD = 15;
+    const imageRef = useRef(null);
+
+    useEffect(() => {
+        // const card = document.querySelector(".imageCard");
+        // console.log({ card });
+
+        function handleHover(e) {
+            const { clientX, clientY, currentTarget } = e;
+            const { clientWidth, clientHeight, offsetLeft, offsetTop } = currentTarget;
+            const horizontal = (clientX - offsetLeft) / clientWidth;
+            const vertical = (clientY - offsetTop) / clientHeight;
+
+            const rotateX = (THRESHOLD / 2 - horizontal * THRESHOLD).toFixed(2);
+            const rotateY = (vertical * THRESHOLD - THRESHOLD / 2).toFixed(2);
+
+            imageRef.current.style.transform =
+                `perspective(${clientWidth}px) rotateX(${rotateY/2.8}deg) rotateY(${rotateX}deg) scale3d(1, 1, 1)`;
+        }
+
+        function resetStyles(e) {
+            imageRef.current.style.transform =
+                `perspective(${e.currentTarget.clientWidth}px) rotateX(0deg) rotateY(0deg)`;
+        }
+
+        imageRef.current.addEventListener("mousemove", handleHover);
+        imageRef.current.addEventListener("mouseleave", resetStyles);
+
+    }, []);
+
     return (
         <Box mt={{ base: 24, md: 32 }} >
             <Heading textAlign={"center"} fontWeight={"medium"} size="xl" color={"primary"} >
@@ -133,22 +166,33 @@ function ExplorePostcards() {
                 gap={1}
             >
                 <GridItem>
-                    <Image src={PostCardOne} />
+                    <div ref={imageRef} className={styles.imageCard} >
+                        <Image src={PostCardOne} />
+                    </div>
                 </GridItem>
                 <GridItem>
-                    <Image src={PostCardFour} />
+                    <div ref={imageRef} className={styles.imageCard} >
+                        <Image src={PostCardFour} />
+                    </div>
                 </GridItem>
                 <GridItem>
-                    <Image src={PostCardFive} />
+                    <div ref={imageRef} className={styles.imageCard} >
+                        <Image src={PostCardFive} />
+                    </div>
                 </GridItem>
                 <GridItem>
-                    <Image src={PostCardSix} />
+                    <div ref={imageRef} className={styles.imageCard} >
+                        <Image src={PostCardSix} />
+                    </div>
                 </GridItem>
                 <GridItem>
-                    <Image src={PostCardTwo} />
+                    <div ref={imageRef} className={styles.imageCard} >
+                        <Image src={PostCardTwo} />
+
+                    </div>
                 </GridItem>
                 <GridItem>
-                    <Image src={PostCardThree} />
+                    <Image src={PostCardThree} ref={imageRef} className={styles.imageCard} />
                 </GridItem>
             </Grid>
         </Box>
