@@ -161,6 +161,8 @@ function ExplorePostcards() {
                                 ref={el => itemsRef.current[index] = el}
                                 onMouseMove={(event) => mouseMoveHandler(index, event)}
                                 onMouseLeave={(event) => mouseLeaveHandler(index, event)}
+                                onTouchMove={(event => mouseMoveHandler(index, event))}
+                                onTouchCancel={(event) => mouseLeaveHandler(index, event)}
                             >
                                 <Image src={imageSrc} />
                             </div>
