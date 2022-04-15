@@ -18,13 +18,7 @@ import EthTwo from "../../assets/eth-2.svg";
 import EthThree from "../../assets/eth-3.svg";
 import MailOne from "../../assets/mail-1.svg";
 import MailTwo from "../../assets/mail-2.svg";
-import PostCardOne from "../../assets/postcard-1.svg";
-import PostCardTwo from "../../assets/postcard-2.svg";
-import PostCardThree from "../../assets/postcard-3.svg";
-import PostCardFour from "../../assets/postcard-4.svg";
-import PostCardFive from "../../assets/postcard-5.svg";
-import PostCardSix from "../../assets/postcard-6.svg";
-
+import imagesArray from '../../data/images';
 
 function LandingPage() {
 
@@ -125,34 +119,29 @@ function HowItWorks() {
 function ExplorePostcards() {
 
     const THRESHOLD = 15;
-    const imageRef = useRef(null);
 
-    useEffect(() => {
-        // const card = document.querySelector(".imageCard");
-        // console.log({ card });
+    const itemsRef = useRef([]);
 
-        function handleHover(e) {
-            const { clientX, clientY, currentTarget } = e;
-            const { clientWidth, clientHeight, offsetLeft, offsetTop } = currentTarget;
-            const horizontal = (clientX - offsetLeft) / clientWidth;
-            const vertical = (clientY - offsetTop) / clientHeight;
+    const mouseMoveHandler = (idx, e) => {
+        const next = itemsRef.current[idx];
+        console.log({ next });
+        const { clientX, clientY, currentTarget } = e;
+        const { clientWidth, clientHeight, offsetLeft, offsetTop } = currentTarget;
+        const horizontal = (clientX - offsetLeft) / clientWidth;
+        const vertical = (clientY - offsetTop) / clientHeight;
 
-            const rotateX = (THRESHOLD / 2 - horizontal * THRESHOLD).toFixed(2);
-            const rotateY = (vertical * THRESHOLD - THRESHOLD / 2).toFixed(2);
+        const rotateX = (THRESHOLD / 2 - horizontal * THRESHOLD).toFixed(2);
+        const rotateY = (vertical * THRESHOLD - THRESHOLD / 2).toFixed(2);
 
-            imageRef.current.style.transform =
-                `perspective(${clientWidth}px) rotateX(${rotateY/2.8}deg) rotateY(${rotateX}deg) scale3d(1, 1, 1)`;
-        }
+        next.style.transform =
+            `perspective(${clientWidth}px) rotateX(${rotateY / 2.8}deg) rotateY(${rotateX}deg) scale3d(1, 1, 1)`;
+    };
 
-        function resetStyles(e) {
-            imageRef.current.style.transform =
-                `perspective(${e.currentTarget.clientWidth}px) rotateX(0deg) rotateY(0deg)`;
-        }
-
-        imageRef.current.addEventListener("mousemove", handleHover);
-        imageRef.current.addEventListener("mouseleave", resetStyles);
-
-    }, []);
+    const mouseLeaveHandler = (idx, e) => {
+        const next = itemsRef.current[idx];
+        next.style.transform =
+            `perspective(${e.currentTarget.clientWidth}px) rotateX(0deg) rotateY(0deg)`;
+    };
 
     return (
         <Box mt={{ base: 24, md: 32 }} >
@@ -165,35 +154,19 @@ function ExplorePostcards() {
                 templateColumns={{ base: "repeat(1, 1fr)", md: 'repeat(3, 1fr)' }}
                 gap={1}
             >
-                <GridItem>
-                    <div ref={imageRef} className={styles.imageCard} >
-                        <Image src={PostCardOne} />
-                    </div>
-                </GridItem>
-                <GridItem>
-                    <div ref={imageRef} className={styles.imageCard} >
-                        <Image src={PostCardFour} />
-                    </div>
-                </GridItem>
-                <GridItem>
-                    <div ref={imageRef} className={styles.imageCard} >
-                        <Image src={PostCardFive} />
-                    </div>
-                </GridItem>
-                <GridItem>
-                    <div ref={imageRef} className={styles.imageCard} >
-                        <Image src={PostCardSix} />
-                    </div>
-                </GridItem>
-                <GridItem>
-                    <div ref={imageRef} className={styles.imageCard} >
-                        <Image src={PostCardTwo} />
-
-                    </div>
-                </GridItem>
-                <GridItem>
-                    <Image src={PostCardThree} ref={imageRef} className={styles.imageCard} />
-                </GridItem>
+                {
+                    imagesArray.map((imageSrc, index) => (
+                        <GridItem key={index} >
+                            <div
+                                ref={el => itemsRef.current[index] = el}
+                                onMouseMove={(event) => mouseMoveHandler(index, event)}
+                                onMouseLeave={(event) => mouseLeaveHandler(index, event)}
+                            >
+                                <Image src={imageSrc} />
+                            </div>
+                        </GridItem>
+                    ))
+                }
             </Grid>
         </Box>
     );

@@ -87,18 +87,6 @@
       top: -120px;
     }
   }
-  
-  .imageCard {
-    position: relative;
-    transition: transform 0.1s ease;
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
-
-  /* Slight parallax effect on hover */
-.imageCard:hover .content {
-  transform: translateZ(12px);
-}
 
   @media only screen and (max-width: 600px) {
     .headerCoinOne {
