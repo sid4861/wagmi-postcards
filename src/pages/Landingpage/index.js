@@ -5,7 +5,13 @@ import {
     Grid,
     GridItem,
     HStack,
-    Image
+    Image,
+    Container,
+    Flex,
+    Icon,
+    VStack,
+    position,
+    Link
 } from '@chakra-ui/react';
 import React, { useEffect, useRef } from 'react'
 import Navbar from '../../components/Navbar';
@@ -19,6 +25,15 @@ import EthThree from "../../assets/eth-3.svg";
 import MailOne from "../../assets/mail-1.svg";
 import MailTwo from "../../assets/mail-2.svg";
 import imagesArray from '../../data/images';
+import ArtistOne from "../../assets/artist-1.png";
+import ArtistTwo from "../../assets/artist-2.png";
+import ArtistThree from "../../assets/artist-3.png";
+import ArtistFour from "../../assets/artist-4.png";
+import ArtistFive from "../../assets/artist-5.png";
+import ArtistSix from "../../assets/artist-6.png";
+
+import { FaInstagram, FaTwitter, FaDribbble } from "react-icons/fa"
+import { useNavigate } from 'react-router-dom';
 
 function LandingPage() {
 
@@ -29,6 +44,8 @@ function LandingPage() {
             <LandingpageHeader />
             <HowItWorks />
             <ExplorePostcards />
+            <Artists />
+            <Footer />
         </Box>
     )
 }
@@ -122,9 +139,10 @@ function ExplorePostcards() {
 
     const itemsRef = useRef([]);
 
+    const navigate = useNavigate();
+
     const mouseMoveHandler = (idx, e) => {
         const next = itemsRef.current[idx];
-        console.log({ next });
         const { clientX, clientY, currentTarget } = e;
         const { clientWidth, clientHeight, offsetLeft, offsetTop } = currentTarget;
         const horizontal = (clientX - offsetLeft) / clientWidth;
@@ -156,7 +174,7 @@ function ExplorePostcards() {
             >
                 {
                     imagesArray.map((imageSrc, index) => (
-                        <GridItem key={index} >
+                        <GridItem key={index} cursor="pointer" onClick={() => navigate("/mint-postcard", { state: {"imageSrc": imageSrc, "index": index} })} >
                             <div
                                 ref={el => itemsRef.current[index] = el}
                                 onMouseMove={(event) => mouseMoveHandler(index, event)}
@@ -172,5 +190,256 @@ function ExplorePostcards() {
             </Grid>
         </Box>
     );
+}
+
+function Artists() {
+
+    return (
+        <Box mt={{ base: 24, md: 32 }} px={{ base: 4, md: 32 }} >
+            <Heading textAlign={"center"} fontWeight={"medium"} size="xl" color={"primary"} >
+                Artists
+            </Heading>
+            <Grid
+                templateRows={{ base: "repeat(1, 1fr)", md: 'repeat(2, 1fr)' }}
+                templateColumns={{ base: "repeat(1, 1fr)", md: 'repeat(3, 1fr)' }}
+                mt={16}
+                gap={8}
+            >
+                <GridItem
+                    display={"flex"}
+                    justifyContent="center"
+                >
+                    <Box
+                        borderRadius={20}
+                        alignSelf={"center"}
+                        w="300px"
+                        h={"300px"}
+                        position={"relative"}
+                        backgroundImage={ArtistOne}
+                        backgroundPosition={"center"}
+                        backgroundRepeat="no-repeat"
+                        backgroundSize="cover"
+                    >
+                        <Box
+                            background={"linear-gradient(179.57deg, rgba(25, 24, 24, 0) 53.93%, rgba(0, 0, 0, 0.7) 69.06%)"}
+                            borderRadius={20}
+                            w="300px"
+                            h="300px"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                        </Box>
+                        <VStack alignItems="center" position={"absolute"} bottom={6} left={"34%"} >
+                            <Text color={"primary"} fontSize={18} fontWeight="bold" >Siddharth</Text>
+                            <HStack>
+                                <Icon as={FaInstagram} color="primary" w={6} h={6} />
+                                <Icon as={FaTwitter} color="primary" w={6} h={6} />
+                                <Icon as={FaDribbble} color="primary" w={6} h={6} />
+                            </HStack>
+                        </VStack>
+                    </Box>
+                </GridItem>
+                <GridItem
+                    display={"flex"}
+                    justifyContent="center"
+                >
+                    <Box
+                        borderRadius={20}
+                        w="300px"
+                        h={"300px"}
+                        position={"relative"}
+                        backgroundImage={ArtistTwo}
+                        backgroundPosition={"center"}
+                        backgroundSize="cover"
+                        backgroundRepeat="no-repeat"
+                    >
+                        <Box
+                            background={"linear-gradient(179.57deg, rgba(25, 24, 24, 0) 53.93%, rgba(0, 0, 0, 0.7) 69.06%)"}
+                            borderRadius={20}
+                            w="300px"
+                            h="300px"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                        </Box>
+                        <VStack alignItems="center" position={"absolute"} bottom={6} left={"34%"} >
+                            <Text color={"primary"} fontSize={18} fontWeight="bold" >Siddharth</Text>
+                            <HStack>
+                                <Icon as={FaInstagram} color="primary" w={6} h={6} />
+                                <Icon as={FaTwitter} color="primary" w={6} h={6} />
+                                <Icon as={FaDribbble} color="primary" w={6} h={6} />
+                            </HStack>
+                        </VStack>
+                    </Box>
+                </GridItem>
+                <GridItem
+                    display={"flex"}
+                    justifyContent="center"
+                >
+                    <Box
+                        borderRadius={20}
+                        w="300px"
+                        h={"300px"}
+                        position={"relative"}
+                        backgroundImage={ArtistThree}
+                        backgroundPosition={"center"}
+                        backgroundRepeat="no-repeat"
+                        backgroundSize="cover"
+
+                    >
+                        <Box
+                            background={"linear-gradient(179.57deg, rgba(25, 24, 24, 0) 53.93%, rgba(0, 0, 0, 0.7) 69.06%)"}
+                            borderRadius={20}
+                            w="300px"
+                            h="300px"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                        </Box>
+                        <VStack alignItems="center" position={"absolute"} bottom={6} left={"34%"} >
+                            <Text color={"primary"} fontSize={18} fontWeight="bold" >Siddharth</Text>
+                            <HStack>
+                                <Icon as={FaInstagram} color="primary" w={6} h={6} />
+                                <Icon as={FaTwitter} color="primary" w={6} h={6} />
+                                <Icon as={FaDribbble} color="primary" w={6} h={6} />
+                            </HStack>
+                        </VStack>
+                    </Box>
+                </GridItem>
+                <GridItem
+                    display={"flex"}
+                    justifyContent="center"
+                >
+                    <Box
+                        borderRadius={20}
+                        w="300px"
+                        h={"300px"}
+                        position={"relative"}
+                        backgroundImage={ArtistFour}
+                        backgroundPosition={"center"}
+                        backgroundRepeat="no-repeat"
+                        backgroundSize="cover"
+
+                    >
+                        <Box
+                            background={"linear-gradient(179.57deg, rgba(25, 24, 24, 0) 53.93%, rgba(0, 0, 0, 0.7) 69.06%)"}
+                            borderRadius={20}
+                            w="300px"
+                            h="300px"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                        </Box>
+                        <VStack alignItems="center" position={"absolute"} bottom={6} left={"34%"} >
+                            <Text color={"primary"} fontSize={18} fontWeight="bold" >Siddharth</Text>
+                            <HStack>
+                                <Icon as={FaInstagram} color="primary" w={6} h={6} />
+                                <Icon as={FaTwitter} color="primary" w={6} h={6} />
+                                <Icon as={FaDribbble} color="primary" w={6} h={6} />
+                            </HStack>
+                        </VStack>
+                    </Box>
+                </GridItem>
+                <GridItem
+                    display={"flex"}
+                    justifyContent="center"
+                >
+                    <Box
+                        borderRadius={20}
+                        w="300px"
+                        h={"300px"}
+                        position={"relative"}
+                        backgroundImage={ArtistFive}
+                        backgroundPosition={"center"}
+                        backgroundRepeat="no-repeat"
+                        backgroundSize="cover"
+
+                    >
+                        <Box
+                            background={"linear-gradient(179.57deg, rgba(25, 24, 24, 0) 53.93%, rgba(0, 0, 0, 0.7) 69.06%)"}
+                            borderRadius={20}
+                            w="300px"
+                            h="300px"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                        </Box>
+                        <VStack alignItems="center" position={"absolute"} bottom={6} left={"34%"} >
+                            <Text color={"primary"} fontSize={18} fontWeight="bold" >Siddharth</Text>
+                            <HStack>
+                                <Icon as={FaInstagram} color="primary" w={6} h={6} />
+                                <Icon as={FaTwitter} color="primary" w={6} h={6} />
+                                <Icon as={FaDribbble} color="primary" w={6} h={6} />
+                            </HStack>
+                        </VStack>
+                    </Box>
+                </GridItem>
+                <GridItem
+                    display={"flex"}
+                    justifyContent="center"
+                >
+                    <Box
+                        borderRadius={20}
+                        w="300px"
+                        h={"300px"}
+                        position={"relative"}
+                        backgroundImage={ArtistSix}
+                        backgroundPosition={"center"}
+                        backgroundRepeat="no-repeat"
+                        backgroundSize="cover"
+
+                    >
+                        <Box
+                            background={"linear-gradient(179.57deg, rgba(25, 24, 24, 0) 53.93%, rgba(0, 0, 0, 0.7) 69.06%)"}
+                            borderRadius={20}
+                            w="300px"
+                            h="300px"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                        </Box>
+                        <VStack alignItems="center" position={"absolute"} bottom={6} left={"34%"} >
+                            <Text color={"primary"} fontSize={18} fontWeight="bold" >Siddharth</Text>
+                            <HStack>
+                                <Icon as={FaInstagram} color="primary" w={6} h={6} />
+                                <Icon as={FaTwitter} color="primary" w={6} h={6} />
+                                <Icon as={FaDribbble} color="primary" w={6} h={6} />
+                            </HStack>
+                        </VStack>
+                    </Box>
+                </GridItem>
+            </Grid>
+
+        </Box >
+    );
+}
+
+function Footer() {
+    return (
+        <Flex mt={{ base: 20, md: 28 }} justifyContent="center" py={8} direction="column" alignItems={"center"} >
+            <Text color={"primary"} fontSize={18} >Wagmi postcards</Text>
+            <Text mt={2} fontSize={14} >Designed and devloped by <Link isExternal href='https://twitter.com/siddharth0x' color={"primary"} >Siddharth</Link></Text>
+            <Text mt={2} fontSize={14} >Artists' profile pictures from  <Link isExternal href='https://nouns.wtf/' color={"primary"} >nouns.wtf</Link></Text>
+            <Text mt={2} fontSize={14} >3D illustrations in header by  <Link isExternal href='https://vijayverma.co/' color={"primary"} >Vijay Verma</Link></Text>
+        </Flex>
+    )
 }
 export default LandingPage

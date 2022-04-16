@@ -4,6 +4,7 @@ import {
 } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/Landingpage";
+import MintPostcard from "./pages/MintPostcard";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/mint-postcard" element={<MintPostcard />} />
         </Routes>
       </BrowserRouter>
     </Box>
