@@ -31,9 +31,10 @@ import ArtistThree from "../../assets/artist-3.png";
 import ArtistFour from "../../assets/artist-4.png";
 import ArtistFive from "../../assets/artist-5.png";
 import ArtistSix from "../../assets/artist-6.png";
-
+import { ethers, utils } from 'ethers';
 import { FaInstagram, FaTwitter, FaDribbble } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom';
+import WagmiPostcard from "../../utils/WagmiPostcard.json";
 
 function LandingPage() {
 
@@ -90,10 +91,30 @@ function LandingPage() {
 }
 
 function LandingpageHeader() {
+
+    const [mintedCount, setMintedCount] = useState(null);
+    const CONTRACT_ADDRESS = process.env.NODE_ENV === "development" ? process.env.REACT_APP_RINKEBY_CONTRACT_ADDRESS : process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS;
+    const CONTRACT_ABI = WagmiPostcard.abi;
+
+    useEffect(() => {
+        async function _getMintedCount() {
+            try {
+                const { ethereum } = window;
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const wagmipostcardContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+                const mintedCount = await wagmipostcardContract.getMintedCount();
+                setMintedCount(mintedCount.toString());
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        _getMintedCount();
+    }, [])
+
     return (
         <Box
             px={{ base: 4, md: 32 }}
-            py={{ base: 4, md: 8 }}
+            py={{ base: 4, md: 4 }}
             display="flex"
             justifyContent="space-between"
             alignItems={{ base: "stretch", md: "center" }}
@@ -104,12 +125,18 @@ function LandingpageHeader() {
                 <LayerBlurOne />
                 <Heading fontWeight={"medium"} size="2xl" maxW={"100%%"} color="primary" >
                     Send nft postcards
-                    for 0.01 ETH.
+                    for 0.025 ETH.
                 </Heading>
                 <Text color={"text"} maxW={"100%"} mt={8} >
-                    Send a thoughtful NFT post card that lasts forever, a physical copy
-                    also gets delivered to the address of the recipient. For every postcard minted, the artist gets 0.005 ETH.
+                    For every postcard minted, A physical copy of the postcard and a t-shirt with the art are shipped to the recipient. 0.011 ETH are sent to the artist. 
                 </Text>
+                {
+                    (mintedCount && Number(mintedCount > 0))
+                    ?
+                    <Heading color={"primary"} mt={4} fontWeight="regular" >{mintedCount} postcards minted so far</Heading>
+                    :
+                    null
+                }
             </Box>
             <Box position={"relative"} w={{ base: "100%", md: "50%" }} mt={{ base: 40, md: 0 }} >
                 <LayerBlurTwo />
@@ -162,8 +189,8 @@ function HowItWorks() {
                         </Heading>
                         <Text color={"text"} fontSize="18px" >
                             The NFT gets minted to the eth address, we also ship
-                            <Text as={"span"} color="primary" > a physical postcard </Text>
-                            , the artist gets 0.005 ETH in her wallet.
+                            <Text as={"span"} color="primary" > a physical postcard and a t-shirt with the art </Text>
+                            , the artist gets 0.011 ETH in her wallet.
                         </Text>
                     </HStack>
                 </GridItem>
