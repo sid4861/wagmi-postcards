@@ -11,12 +11,15 @@ import {
     Text,
     Spinner
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import PrimaryButton from "../../components/PrimaryButton";
 import { encode, decode } from 'js-base64';
 import addresses from "../../data/artist-addresses-rinkeby";
+import axios from "axios";
+import { ethers, utils } from 'ethers';
+import WagmiPostcard from "../../utils/WagmiPostcard.json";
 
 export default function MintNft() {
 
@@ -25,14 +28,28 @@ export default function MintNft() {
     const [postalAddress, setPostalAddress] = useState("");
     const [message, setMessage] = useState("");
     const [isPostcardMinting, setIsPostcardMinting] = useState(false);
+    const [currentTokenId, setCurrentTokenId] = useState(null);
     const messageRef = useRef();
 
-    // const keyUpHandler = (ele) => {
-    //     let t = ele.value;
-    //     messageRef.current.innerHTML = t.replace(/\n\r?/g, '<br />');
-    // }
+    const CONTRACT_ADDRESS = process.env.NODE_ENV === "development" ? process.env.REACT_APP_RINKEBY_CONTRACT_ADDRESS : process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS;
+    const CONTRACT_ABI = WagmiPostcard.abi;
 
-    const mintPostcard = () => {
+    useEffect(async () => {
+        async function _getMintedCount() {
+            try {
+                const { ethereum } = window;
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const wagmipostcardContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+                const mintedCount = await wagmipostcardContract.getMintedCount();
+                setCurrentTokenId(mintedCount.toString());
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        await _getMintedCount();
+    }, [])
+
+    const mintPostcard = async () => {
 
         console.log(message);
         let textContainer = messageRef.current;     // The element with the text.
@@ -42,6 +59,7 @@ export default function MintNft() {
         img.setAttribute('src', state.imageSrc);
 
         let canvas = document.createElement("canvas");
+        let tokenURI = "";
 
         // Draw the image on the canvas.
         let drawImage = () => {
@@ -141,16 +159,50 @@ export default function MintNft() {
             });
             console.log(tokenMetadata);
             const tokenMetadataBase64 = encode(tokenMetadata);
-            const tokenURI = `data:application/json;base64,${tokenMetadataBase64}`;
+            tokenURI = `data:application/json;base64,${tokenMetadataBase64}`;
             console.log(tokenURI);
-            console.log(addresses[state.index])
+            console.log(addresses[state.index]);
+            try {
+                const { ethereum } = window;
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const signer = provider.getSigner();
+                const wagmipostcardContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+                let txn = await wagmipostcardContract.mintWagmiPostcard(tokenURI, addresses[state.index], ethAddress,
+                    {
+                        value: utils.parseEther("0.013")
+                    }
+                );
+                await txn.wait();
+
+            } catch (error) {
+
+            }
+        }
+
+        async function saveToDatabase() {
+            const apiPayload = {
+                tokenId: Number(currentTokenId),
+                recipientEthAddress: ethAddress,
+                recipientPostalAddress: postalAddress,
+                imageURI: canvas.toDataURL("image/png"),
+                artistEthAddress: addresses[state.index],
+                mintedDate: new Date(),
+                timezoneOffset: -1 * new Date().getTimezoneOffset()
+            }
+            try {
+                const response = await axios.post("http://localhost:7500/postcard", apiPayload);
+            } catch (error) {
+                console.log(error);
+            }
+
         }
         drawImage();
-        mint();
-        // downloadImage("hello");    // Download the processed image.
-
-
-
+        setIsPostcardMinting(true);
+        await saveToDatabase();
+        // await mint();
+        setIsPostcardMinting(false);
+        downloadImage("wagmi-postcard");    // Download the processed image.
 
     }
 

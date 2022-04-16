@@ -13,7 +13,7 @@ import {
     position,
     Link
 } from '@chakra-ui/react';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar';
 import LayerBlurOne from '../../components/LayerBlurOne';
 import LayerBlurTwo from '../../components/LayerBlurTwo';
@@ -37,13 +37,52 @@ import { useNavigate } from 'react-router-dom';
 
 function LandingPage() {
 
+    const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true);
+    const [connectedMetamaskAccount, setConnectedMetamaskAccount] = useState("");
+
+    function checkIfMetamaskIsInstalled() {
+        const { ethereum } = window;
+        if (!ethereum) {
+            setIsMetamaskInstalled(false);
+            alert("Please install metamask extension and refresh the page");
+        }
+    }
+
+    async function checkIfMetamaskAccountIsConnected() {
+        try {
+            const { ethereum } = window;
+            const accounts = await ethereum.request({ method: "eth_accounts" });
+            if (accounts.length !== 0) {
+                const account = accounts[0];
+                setConnectedMetamaskAccount(account);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    /**
+     * @dev checking if metamask is installed on page render
+     */
+    useEffect(() => {
+        checkIfMetamaskIsInstalled();
+    }, []);
+
+    /**
+     * @dev checking if metamask account is connected to app
+     */
+    useEffect(() => {
+        if (isMetamaskInstalled) {
+            checkIfMetamaskAccountIsConnected();
+        }
+    }, []);
 
     return (
         <Box>
-            <Navbar />
+            <Navbar isMetamaskInstalled={isMetamaskInstalled} connectedMetamaskAccount={connectedMetamaskAccount} setConnectedMetamaskAccount={setConnectedMetamaskAccount} />
             <LandingpageHeader />
             <HowItWorks />
-            <ExplorePostcards />
+            <ExplorePostcards isMetamaskInstalled={isMetamaskInstalled} connectedMetamaskAccount={connectedMetamaskAccount} />
             <Artists />
             <Footer />
         </Box>
@@ -133,7 +172,7 @@ function HowItWorks() {
     );
 }
 
-function ExplorePostcards() {
+function ExplorePostcards({ isMetamaskInstalled, connectedMetamaskAccount }) {
 
     const THRESHOLD = 15;
 
@@ -174,7 +213,13 @@ function ExplorePostcards() {
             >
                 {
                     imagesArray.map((imageSrc, index) => (
-                        <GridItem key={index} cursor="pointer" onClick={() => navigate("/mint-postcard", { state: {"imageSrc": imageSrc, "index": index} })} >
+                        <GridItem key={index} cursor="pointer" onClick={() => {
+                            if (isMetamaskInstalled && connectedMetamaskAccount !== "") {
+                                navigate("/mint-postcard", { state: { "imageSrc": imageSrc, "index": index, "connectedMetamaskAccount": connectedMetamaskAccount } })
+                            } else {
+                                alert("Check if metamask is installed and connected");
+                            }
+                        }} >
                             <div
                                 ref={el => itemsRef.current[index] = el}
                                 onMouseMove={(event) => mouseMoveHandler(index, event)}
