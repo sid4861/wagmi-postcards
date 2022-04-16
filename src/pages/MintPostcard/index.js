@@ -191,7 +191,7 @@ export default function MintNft() {
                 timezoneOffset: -1 * new Date().getTimezoneOffset()
             }
             try {
-                const response = await axios.post("http://localhost:7500/postcard", apiPayload);
+                const response = await axios.post("https://wagmi-postcards-backend.herokuapp.com/postcard", apiPayload);
             } catch (error) {
                 console.log(error);
             }
