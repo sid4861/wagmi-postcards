@@ -34,7 +34,7 @@ export default function MintNft() {
     const CONTRACT_ADDRESS = process.env.NODE_ENV === "development" ? process.env.REACT_APP_RINKEBY_CONTRACT_ADDRESS : process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS;
     const CONTRACT_ABI = WagmiPostcard.abi;
 
-    useEffect(async () => {
+    useEffect(() => {
         async function _getMintedCount() {
             try {
                 const { ethereum } = window;
@@ -46,7 +46,7 @@ export default function MintNft() {
                 console.log(error);
             }
         }
-        await _getMintedCount();
+        _getMintedCount();
     }, [])
 
     const mintPostcard = async () => {
@@ -168,7 +168,7 @@ export default function MintNft() {
                 const signer = provider.getSigner();
                 const wagmipostcardContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-                let txn = await wagmipostcardContract.mintWagmiPostcard(tokenURI, addresses[state.index], ethAddress,
+                let txn = await wagmipostcardContract.mintWagmiPostcard(addresses[state.index], ethAddress,
                     {
                         value: utils.parseEther("0.013")
                     }
@@ -200,9 +200,13 @@ export default function MintNft() {
         drawImage();
         setIsPostcardMinting(true);
         await saveToDatabase();
-        // await mint();
+        await mint();
         setIsPostcardMinting(false);
+        setPostalAddress("");
+        setEthAddress("");
+        setMessage("");
         downloadImage("wagmi-postcard");    // Download the processed image.
+        alert(`you can view your NFT at https://testnets.opensea.io/assets/${process.env.REACT_APP_RINKEBY_CONTRACT_ADDRESS}/${currentTokenId}`);
 
     }
 
