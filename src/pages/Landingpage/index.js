@@ -117,8 +117,8 @@ function LandingpageHeader() {
             py={{ base: 4, md: 4 }}
             display="flex"
             justifyContent="space-between"
-            alignItems={{ base: "stretch", md: "center" }}
-            flexDirection={{ base: "column", md: "row" }}
+            alignItems={{ base: "stretch", md: "center", lg: "center" }}
+            flexDirection={{ base: "column", md: "row", lg: "row" }}
             mt={24}
         >
             <Box position={"relative"} w={{ base: "100%", md: "50%" }} >
@@ -159,8 +159,8 @@ function HowItWorks() {
             <Heading textAlign={"center"} fontWeight={"medium"} size="xl" color={"primary"} >
                 How it works ?
             </Heading>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={0} mt={{ base: 4, md: 8 }} borderTopWidth={2} borderTopColor="primary" borderBottomWidth={2} borderBottomColor="primary" >
-                <GridItem w='100%' p={{ base: 4, md: 20 }} borderRightWidth={{ base: 0, md: 2 }} borderRightColor="primary" borderBottomWidth={{ base: 2, md: 0 }} borderBottomColor="primary" >
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(1, 1fr)', lg: 'repeat(3, 1fr)' }} gap={0} mt={{ base: 4, md: 8 }} borderTopWidth={2} borderTopColor="primary" borderBottomWidth={2} borderBottomColor="primary" >
+                <GridItem w='100%' p={{ base: 4, md: 20 }} borderRightWidth={{ base: 0, md: 0, lg: 2 }} borderRightColor="primary" borderBottomWidth={{ base: 2, md: 2, lg: 0 }} borderBottomColor="primary" >
                     <HStack alignItems={"center"} gap={6} >
                         <Heading fontSize={{ base: "80px", md: "120px" }} color="primary"  >
                             1
@@ -171,7 +171,7 @@ function HowItWorks() {
                         </Text>
                     </HStack>
                 </GridItem>
-                <GridItem w='100%' p={{ base: 4, md: 20 }} borderRightWidth={{ base: 0, md: 2 }} borderRightColor="primary" borderBottomWidth={{ base: 2, md: 0 }} borderBottomColor="primary" >
+                <GridItem w='100%' p={{ base: 4, md: 20 }} borderRightWidth={{ base: 0, md: 0, lg: 2 }} borderRightColor="primary" borderBottomWidth={{ base: 2, md: 2, lg: 0 }} borderBottomColor="primary" >
                     <HStack alignItems={"center"} gap={6} >
                         <Heading fontSize={{ base: "80px", md: "120px" }} color="primary"  >
                             2
@@ -272,8 +272,8 @@ function Artists() {
                 Artists
             </Heading>
             <Grid
-                templateRows={{ base: "repeat(1, 1fr)", md: 'repeat(2, 1fr)' }}
-                templateColumns={{ base: "repeat(1, 1fr)", md: 'repeat(3, 1fr)' }}
+                templateRows={{ base: "repeat(1, 1fr)", md: 'repeat(3, 1fr)', lg: 'repeat(2, 1fr)' }}
+                templateColumns={{ base: "repeat(1, 1fr)", md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
                 mt={16}
                 gap={8}
             >
